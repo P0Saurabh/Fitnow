@@ -305,7 +305,7 @@ svg.fat {
         </div>
     </div>
     <script src="/ani1.js"></script>
-    <script src="/api/login.js"></script>
+
     <script>
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -346,7 +346,7 @@ svg.fat {
             var user = result.user;
             return user.getIdToken().then((idToken) => {
                 sendTokenToServer(idToken); // Send ID token to server for verification
-                window.location.href = '/gym website/gym.html'; // Redirect to gym.html
+                window.location.href = 'public/gym/gym.html'; // Redirect to gym.html
             });
         })
         .catch((error) => {
@@ -390,7 +390,7 @@ svg.fat {
             // Proceed with your application logic
             user.getIdToken().then((idToken) => {
                 sendTokenToServer(idToken);
-                window.location.href = '/gym website/gym.html'; // Redirect to gym.html
+                window.location.href = 'public/gym/gym.html'; // Redirect to gym.html
             });
         })
         .catch((error) => {
