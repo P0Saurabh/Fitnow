@@ -346,6 +346,7 @@ svg.fat {
             var user = result.user;
             return user.getIdToken().then((idToken) => {
                 sendTokenToServer(idToken); // Send ID token to server for verification
+                window.location.href = '/gym.html'; // Redirect to gym.html
             });
         })
         .catch((error) => {
@@ -378,26 +379,27 @@ svg.fat {
 
         // Function to sign in with email/password
         function signInWithEmail() {
-            const email = document.getElementById('signInEmail').value;
-            const password = document.getElementById('signInPassword').value;
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Signed in successfully
-                    var user = userCredential.user;
-                    console.log('User signed in:', user);
-                    showAlert('Signin successful!'); // Display success alert
-                    // Proceed with your application logic
-                    user.getIdToken().then((idToken) => {
-                        sendTokenToServer(idToken);
-                    });
-                })
-                .catch((error) => {
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
-                    console.error('Email sign-in error:', errorCode, errorMessage);
-                    showAlert(errorMessage); // Display error alert
-                });
-        }
+    const email = document.getElementById('signInEmail').value;
+    const password = document.getElementById('signInPassword').value;
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed in successfully
+            var user = userCredential.user;
+            console.log('User signed in:', user);
+            showAlert('Signin successful!'); // Display success alert
+            // Proceed with your application logic
+            user.getIdToken().then((idToken) => {
+                sendTokenToServer(idToken);
+                window.location.href = '/gym.html'; // Redirect to gym.html
+            });
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.error('Email sign-in error:', errorCode, errorMessage);
+            showAlert(errorMessage); // Display error alert
+        });
+}
         const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
