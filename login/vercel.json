@@ -8,6 +8,10 @@
     {
       "src": "public/index.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "public/gym/gym.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
