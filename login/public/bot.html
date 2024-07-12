@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini API Chat Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .chat-container {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      max-width: 600px;
+    }
+    .message {
+      margin-bottom: 10px;
+    }
+    .user-message {
+      color: green;
+    }
+    .bot-message {
+      color: blue;
+      white-space: pre-wrap; /* Preserve whitespace formatting */
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gemini API Chat Bot</h1>
+
+  <div class="chat-container" id="chatContainer">
+    <!-- Chat messages will be dynamically added here -->
+  </div>
+
+  <form id="chatForm">
+    <input type="text" id="userInput" placeholder="Enter your question...">
+    <input type="submit" value="Send">
+  </form>
+
+  <script>
+    const chatContainer = document.getElementById('chatContainer');
+    const chatForm = document.getElementById('chatForm');
+    const userInput = document.getElementById('userInput');
+
+    chatForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const inputText = userInput.value.trim();
+      if (inputText !== '') {
+        displayMessage("user", inputText);
+        const result = await sendMessage(inputText);
+        displayMessage("bot", formatResponse(result.response));
+        userInput.value = ''; // Clear input field after sending
+      }
+    });
+
+    async function sendMessage(inputText) {
+      try {
+        const response = await fetch('http://localhost:3000/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: inputText }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error('Fetch error:', error);
+        return { response: 'There was an error with the request.' };
+      }
+    }
+
+    function displayMessage(role, text) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+      messageElement.classList.add(role + '-message');
+      messageElement.textContent = `${role === 'user' ? 'You: ' : 'Bot: '}${text}`;
+      chatContainer.appendChild(messageElement);
+    }
+
+    function formatResponse(response) {
+      // Replace **text** with bold text and add new lines
+      response = response.replace(/\*\*(.*?)\*\*/g, '\n\n**$1**\n');
+      // Replace *text* with list items
+      response = response.replace(/\*(.*?)\*/g, '\n* $1\n');
+      return response.trim();
+    }
+  </script>
+</body>
+</html>

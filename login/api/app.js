@@ -2,20 +2,33 @@ const admin = require('firebase-admin');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-const serviceAccount = require('./fitnesswebsite-731b5-firebase-adminsdk-owcpa-d821d15f4f.json'); // Update path to your service account key
+// Firebase Admin SDK setup
+const serviceAccount = require('./login/api/fitnesswebsite-731b5-firebase-adminsdk-owcpa-d821d15f4f.json'); // Update path to your service account key
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://fitnow-5j0s04irp-p0saurabhs-projects.vercel.app' // Replace with your Firebase project's databaseURL
+  databaseURL: 'https://your-project-id.firebaseio.com' // Replace with your Firebase project's databaseURL
 });
 
+// Google Generative AI (Gemini) setup
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({
+  model: 'gemini-1.0-pro',
+});
+
+// Express setup
 const app = express();
 const port = process.env.PORT || 3000; // Use the PORT environment variable if available
 
 app.use(bodyParser.json());
 app.use(cors()); // Enable CORS for all routes
 
+// Serve static files (like index.html) from a directory
+app.use(express.static('public'));
+
+// Firebase ID token verification function
 async function verifyIdToken(idToken) {
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
@@ -27,6 +40,7 @@ async function verifyIdToken(idToken) {
   }
 }
 
+// API endpoint to verify Firebase ID token
 app.post('/api/verifyToken', async (req, res) => {
   const idToken = req.body.idToken;
   try {
@@ -41,6 +55,36 @@ app.post('/api/verifyToken', async (req, res) => {
   }
 });
 
+// API endpoint to interact with Gemini AI
+app.post('/api/generateResponse', async (req, res) => {
+  const userInput = req.body.userInput;
+  try {
+    const chatSession = model.startChat({
+      generationConfig: {
+        temperature: 0.9,
+        topP: 1,
+        topK: 1,
+        maxOutputTokens: 2048,
+        responseMimeType: 'text/plain',
+      },
+      history: [
+        {
+          role: 'user',
+          parts: [{ text: userInput }],
+        },
+      ],
+    });
+
+    const result = await chatSession.sendMessage();
+    const botResponse = result.response.text();
+    res.status(200).json({ response: botResponse });
+  } catch (error) {
+    console.error('Error generating response from Gemini:', error);
+    res.status(500).json({ message: 'Failed to generate response from Gemini', error });
+  }
+});
+
+// Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
