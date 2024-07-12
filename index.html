@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>My Website</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="ani1.css">
+    <!-- Add Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>Create Account</h1>
+                <div class="social-container">
+                    <a href="#" class="social" id="googleSignUp" onclick="signInWithGoogle()"><i class="fab fa-google-plus-g"></i></a>
+                </div>
+                <span>or use your email for registration</span>
+                <input type="text" id="signupName" placeholder="Name" />
+                <input type="email" id="signupEmail" placeholder="Email" />
+                <input type="password" id="signupPassword" placeholder="Password" />
+                <button type="button" id="signUpButton" onclick="signUpWithEmail()">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>Sign in</h1>
+                <div class="social-container">
+                    <a href="#" class="social" id="googleSignIn" onclick="signInWithGoogle()"><i class="fab fa-google-plus-g"></i></a>
+                </div>
+                <span>or use your account</span>
+                <input type="email" id="signInEmail" placeholder="Email" />
+                <input type="password" id="signInPassword" placeholder="Password" />
+                <a href="#">Forgot your password?</a>
+                <button type="button" id="signInButton" onclick="signInWithEmail()">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <br>
+                    <button type="button" class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <br>
+                    <button type="button" class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="ani1.js"></script>
+    <script src="login.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFktKLtxFR85ZZLSL5QAWfZ4zvyCywdd4",
+            authDomain: "fitnow-43200.firebaseapp.com",
+            projectId: "fitnow-43200",
+            storageBucket: "fitnow-43200.appspot.com",
+            messagingSenderId: "473748995732",
+            appId: "1:473748995732:web:687f0e5aebeac2a6b1be81"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Function to send ID token to server for verification
+        function sendTokenToServer(idToken) {
+            fetch('http://localhost:3000/verifyToken', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ idToken }),
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error sending token to server:', error));
+        }
+
+        // Function to display success alert
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Example: Sign in with Google
+        function signInWithGoogle() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    var user = result.user;
+                    return user.getIdToken().then((idToken) => {
+                        sendTokenToServer(idToken); // Send ID token to server for verification
+                    });
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.error('Google sign-in error:', errorCode, errorMessage);
+                });
+        }
+
+        // Function to sign up with email/password
+        function signUpWithEmail() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed up successfully
+                    var user = userCredential.user;
+                    console.log('User signed up:', user);
+                    showAlert('Signup successful!'); // Display success alert
+                    // Optionally, you can send verification email or handle other logic
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.error('Email sign-up error:', errorCode, errorMessage);
+                    showAlert(errorMessage); // Display error alert
+                });
+        }
+
+        // Function to sign in with email/password
+        function signInWithEmail() {
+            const email = document.getElementById('signInEmail').value;
+            const password = document.getElementById('signInPassword').value;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in successfully
+                    var user = userCredential.user;
+                    console.log('User signed in:', user);
+                    showAlert('Signin successful!'); // Display success alert
+                    // Proceed with your application logic
+                    user.getIdToken().then((idToken) => {
+                        sendTokenToServer(idToken);
+                    });
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.error('Email sign-in error:', errorCode, errorMessage);
+                    showAlert(errorMessage); // Display error alert
+                });
+        }
+    </script>
+</body>
+</html>
