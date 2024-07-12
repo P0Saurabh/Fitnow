@@ -16,6 +16,7 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/app.js" },
+    { "src": "/gym/(.*)", "dest": "/public/gym/$1" },
     { "src": "/(.*)", "dest": "/public/$1" }
   ]
 }
