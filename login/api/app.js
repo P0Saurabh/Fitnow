@@ -6,7 +6,7 @@ const serviceAccount = require('./fitnesswebsite-731b5-firebase-adminsdk-owcpa-d
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://your-project-id.firebaseio.com' // Replace with your Firebase project's databaseURL
+  databaseURL: 'https://fitnow-5j0s04irp-p0saurabhs-projects.vercel.app' // Replace with your Firebase project's databaseURL
 });
 
 const app = express();
