@@ -6,53 +6,138 @@
   <title>GymAI</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 20px;
+      background-color: #0b0909ce;
     }
+    .menu {
+  width: 100%;
+  background: linear-gradient(to right, #0e0e0e 70%, #142d2a);
+  padding: 12px 0;
+}
+
+.menu .container {
+  text-align: left;
+  justify-content: space-between;
+}
+
+.mobile-btn {
+  display: none;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.logo img {
+  width: 55px;
+  height: auto;
+}
+
+.nav {
+  list-style: none;
+  text-align: end;
+  padding-right: 20px;
+}
+
+.nav-item {
+  display: inline-block;
+  margin-right: 30px;
+  font-size: 18px;
+  
+  font-weight: 400;
+}
+
+.nav-item a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.nav-item:hover a {
+  color: #29a396;
+  transition: 0.3s linear;
+}
+
+.nav-item:last-of-type {
+  margin-right: 0;
+}
     .chat-container {
       margin-top: 20px;
       padding: 10px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       max-width: 600px;
+      overflow: auto;
+      max-height: 400px;
     }
+
     .message {
       margin-bottom: 10px;
     }
+
     .user-message {
-      color: green;
+      color: #0a810a;
     }
+
     .bot-message {
-      color: blue;
-      white-space: pre-wrap; /* Preserve whitespace formatting */
+      color: #0a4dc9;
     }
+
     input[type="text"] {
-      width: 100%;
-      padding: 8px;
+      width: calc(100% - 85px);
+      padding: 10px;
       margin-top: 10px;
       box-sizing: border-box;
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 14px;
     }
+
     input[type="submit"] {
+      width: 80px;
       background-color: #4CAF50;
       color: white;
-      padding: 10px 20px;
+      padding: 10px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
+      margin-left: 5px;
+      margin-top: 10px;
     }
+
     input[type="submit"]:hover {
       background-color: #45a049;
+    }
+
+    h1 {
+      color: #bfbfbf;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+  <div class="menu">
+    <div class="container flex">
+
+        <div class="mobile-btn">
+            <ion-icon name="grid"></ion-icon>
+        </div>
+
+        <ul class="nav" >
+            <li class="nav-item"><a href="gym.html">Home</a></li>
+            <li class="nav-item"><a href="#why-us">Features</a></li>
+            <li class="nav-item"><a href="#explore">Explore</a></li>
+            <li class="nav-item"><a href="bot.html">GymAI</a></li>
+        </ul>
+    </div>
+</div>
   <h1>GymAI</h1>
 
   <div class="chat-container" id="chatContainer">
+    <h3>Your chats</h3>
     <!-- Chat messages will be dynamically added here -->
   </div>
 
@@ -79,7 +164,7 @@
 
     async function sendMessage(inputText) {
       try {
-        const response = await fetch('/api/chat', { // Assuming your backend route is /api/chat
+        const response = await fetch('/api/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -104,6 +189,7 @@
       messageElement.classList.add(role + '-message');
       messageElement.textContent = `${role === 'user' ? 'You: ' : 'Bot: '}${text}`;
       chatContainer.appendChild(messageElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight; // Auto-scroll to bottom
     }
 
     function formatResponse(response) {
@@ -113,6 +199,7 @@
       response = response.replace(/\*(.*?)\*/g, '\n* $1\n');
       return response.trim();
     }
+    
   </script>
 </body>
 </html>
