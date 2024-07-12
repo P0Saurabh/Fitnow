@@ -1,27 +1,16 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "api/app.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/gym/gym.html",
-      "use": "@vercel/static"
-    },
+    { "src": "api/app.js", "use": "@vercel/node" },
+    { "src": "public/index.html", "use": "@vercel/static" },
+    { "src": "public/gym/gym.html", "use": "@vercel/static" },
     { "src": "public/gym/css.css", "use": "@vercel/static" },
-    { "src": "public/gym/img", "use": "@vercel/static" },
-    { "src": "public/css/js.js", "use": "@vercel/static" }
+    { "src": "public/css/js.js", "use": "@vercel/static" },
+    { "src": "public/gym/img/(.*)", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/app.js" },
     { "src": "/gym/(.*)", "dest": "/public/gym/$1" },
-    { "src": "/(.*)", "dest": "/public/$1" },
-    { "src": "public/gym/css.css", "use": "@vercel/static" },
-    { "src": "public/gym/img", "use": "@vercel/static" }
+    { "src": "/(.*)", "dest": "/public/$1" }
   ]
 }
