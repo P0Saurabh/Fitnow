@@ -4,8 +4,6 @@
     { "src": "api/app.js", "use": "@vercel/node" },
     { "src": "public/index.html", "use": "@vercel/static" },
     { "src": "public/gym/gym.html", "use": "@vercel/static" },
-    { "src": "public/gym/css.css", "use": "@vercel/static" },
-    { "src": "public/css/js.js", "use": "@vercel/static" },
     { "src": "public/gym/img/(.*)", "use": "@vercel/static" }
   ],
   "routes": [
