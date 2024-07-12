@@ -4,7 +4,7 @@
     { "src": "api/server.js", "use": "@vercel/node" },
     { "src": "public/index.html", "use": "@vercel/static" },
     { "src": "public/gym/gym.html", "use": "@vercel/static" },
-    { "src": "public/bot.html", "use": "@vercel/static" }
+    { "src": "public/gym/bot.html", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/server.js" },

@@ -50,7 +50,7 @@
   </style>
 </head>
 <body>
-  <h1>Gemini API Chat Bot</h1>
+  <h1>GymAI</h1>
 
   <div class="chat-container" id="chatContainer">
     <!-- Chat messages will be dynamically added here -->
@@ -79,7 +79,7 @@
 
     async function sendMessage(inputText) {
       try {
-        const response = await fetch('http://localhost:3000/chat', {
+        const response = await fetch('/api/chat', { // Assuming your backend route is /api/chat
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -108,7 +108,7 @@
 
     function formatResponse(response) {
       // Replace **text** with bold text and add new lines
-      response = response.replace(/\*\*(.*?)\*\*/g, '\n\n**$1**\n');
+      response = response.replace(/\*\*(.*?)\*\*/g, '\n**$1**\n');
       // Replace *text* with list items
       response = response.replace(/\*(.*?)\*/g, '\n* $1\n');
       return response.trim();
