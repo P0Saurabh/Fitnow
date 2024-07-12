@@ -1,5 +1,3 @@
-// app.js
-
 const admin = require('firebase-admin');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,16 +10,14 @@ admin.initializeApp({
 });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;  // Use the PORT environment variable if available
 
 app.use(bodyParser.json());
 
-// Example function to verify ID token and get user info
 async function verifyIdToken(idToken) {
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
-    // Additional logic, such as fetching user data from Firestore
     return { uid, ...decodedToken };
   } catch (error) {
     console.error('Error verifying ID token:', error);
@@ -29,8 +25,7 @@ async function verifyIdToken(idToken) {
   }
 }
 
-// Endpoint to handle user authentication
-app.post('/verifyToken', async (req, res) => {
+app.post('/api/verifyToken', async (req, res) => {
   const idToken = req.body.idToken;
   try {
     const user = await verifyIdToken(idToken);
@@ -44,7 +39,6 @@ app.post('/verifyToken', async (req, res) => {
   }
 });
 
-// Start server
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
 });
