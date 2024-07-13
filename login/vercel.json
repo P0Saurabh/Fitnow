@@ -1,14 +1,16 @@
 {
   "version": 2,
   "builds": [
+    { "src": "api/app.js", "use": "@vercel/node" },
     { "src": "api/server.js", "use": "@vercel/node" },
     { "src": "public/index.html", "use": "@vercel/static" },
     { "src": "public/gym/gym.html", "use": "@vercel/static" },
     { "src": "public/gym/bot.html", "use": "@vercel/static" },
-    { "src": "public/gym/mar.html", "use": "@vercel/static" }  
+    { "src": "public/gym/mar.html", "use": "@vercel/static" } 
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/server.js" },
+    { "src": "/api/(.*)", "dest": "/api/app.js.js" },
     { "src": "/gym/(.*)", "dest": "/public/gym/$1" },
     { "src": "/(.*)", "dest": "/public/$1" }
   ]
