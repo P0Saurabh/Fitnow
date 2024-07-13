@@ -412,7 +412,55 @@ body {
     font-size: 16px;
   }
 }
+.blog {
+  background-color: transparent;
+}
 
+.blog_container .section_header {
+  color: var(--white);
+}
+
+.blog__grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.blog__card img {
+  margin-bottom: 10px;
+}
+
+.blog__card h4 {
+  max-width: calc(100% - 1rem);
+  font-size: 1.2rem;
+  font-weight: 400;
+  font-family: var(--header-font);
+  color: var(--white);
+  transition: 0.3s;
+}
+
+.blog__card:hover h4 {
+  color: var(--primary-color);
+}
+
+.blog__btn {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+@media (width > 540px) {
+
+  .blog__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+@media (width > 768px) {
+    .blog__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+}
 /* End Responsive */
 </style>
 <body>
@@ -541,7 +589,39 @@ Collection of Refined and Expert recommend Excesises
     </div>
     <!-- End Trainer -->
 
-
+    <div class="section" id="trainer">
+      <h2 class="primary mb">Our Blogs</h2>
+      <div class="container flex">
+          
+        <section class="blog" id="blog">
+          <div class="section_container blog_container">
+            <!-- <h2 class="section__header">BLOGS</h2> -->
+            <div class="blog__grid">
+              <div class="blog__card">
+                <!-- <img src="./img/blog-1.jpg" alt="blog" /> -->
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpzkd-wq20OJFmcLw_g1kqCRAQtJjKatefCA&s" alt="blog" height="192px" width="288p×"  />
+                <h4>Fueling Your Body for Optimal Performance</h4>
+              </div>
+              <div class="blog__card">
+                <img src="https://img.freepik.com/free-photo/portrat-caucasian-professional-male-athlete-runner-training-isolated-black_155003-42226.jpg?t=st=1720806693~exp=1720810293~hmac=e8d9ba5e755d49d444fb1ea0e50daa06d9f007e279150836348a124f24e60446&w=996" alt="blog" height="192px" width="288p×"/>
+                <h4>A Guide to Setting and Achieving Fitness Goals</h4>
+              </div>
+              <div class="blog__card">
+                <img src="https://img.freepik.com/free-photo/full-shot-man-training-with-ball_23-2149734701.jpg?t=st=1720806793~exp=1720810393~hmac=42585b2351d8a4b23264b8afabecd671759a3d796682dd9100f32af0ce23d27f&w=996" alt="blog" height="192px" width="288p×"/>
+                <h4>Tips and Techniques for Efficient Exercise</h4>
+              </div>
+              <div class="blog__card">
+                <img src="https://img.freepik.com/free-photo/athletic-man-practicing-gymnastics-keep-fit_23-2150989801.jpg?t=st=1720806934~exp=1720810534~hmac=13cb03a5b4ffdf46bded0d42ba88beefd8743f7167df29aa41068c8a3079c892&w=740" alt="blog" height="192px" width="288p×"/>
+                <h4>A Beginner's Guide to Starting Your Running Journey</h4>
+              </div>
+            </div>
+            <div class="blog__btn">
+              <button class="btn btn__primary">VIEW ALL</button>
+            </div>
+          </div>
+        </section>
+      </div>
+  </div>
 
     <!-- Discount -->
     <div class="section" id="discount">
